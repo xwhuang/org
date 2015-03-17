@@ -1,0 +1,119 @@
+#+STARTUP: overview
+#+TITLE: 
+#+DATE:
+#+OPTIONS:
+#+OPTIONS: H:4 num:4 TeX:t LaTeX:t toc:nil
+#+LATEX_CLASS: article
+# Latex options: twoside,twocolumn,titlepage
+#+LaTeX_CLASS_OPTIONS: [10pt,twocolumn]
+#+LATEX_HEADER: \usepackage{fullpage}
+#+LATEX_HEADER: \usepackage{color}
+#+LATEX_HEADER: \usepackage{multicol}
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage{enumitem}
+#+LATEX_HEADER: \usepackage{xeCJK}
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usepackage{pgfplots}
+#+LATEX_HEADER: \usepackage{balance}
+#+LATEX_HEADER: \usepackage{lipsum}
+#+LATEX_HEADER: \usetikzlibrary{arrows}
+#+LATEX_HEADER: \usepackage[compact]{}
+#+LATEX_HEADER: \usepackage{dblfloatfix}
+#+LATEX_HEADER: \usepackage[justification=centering]{caption}
+#+LATEX_HEADER: \setCJKmainfont[BoldFont=FandolHei:style=Regular]{FandolSong:style=Regular}\setCJKmainfont[BoldFont=FandolHei:style=Regular]{FandolSong:style=Regular}
+#+LATEX: \newcommand{\fsfortytwo}{\fontsize{42pt}{\baselineskip}\selectfont}
+#+LATEX: \newcommand{\fsthirtysix}{\fontsize{36pt}{\baselineskip}\selectfont}
+#+LATEX: \newcommand{\fstwentyeight}{\fontsize{28pt}{\baselineskip}\selectfont}
+#+LATEX: \newcommand{\fstwenty}{\fontsize{20pt}{\baselineskip}\selectfont}
+#+LATEX: \newcommand{\fseighteen}{\fontsize{18pt}{\baselineskip}\selectfont}
+#+LATEX: \newcommand{\fssixteen}{\fontsize{16pt}{\baselineskip}\selectfont}
+#+LATEX: \newcommand{\fsten}{\fontsize{10pt}{\baselineskip}\selectfont}
+#+LATEX: \newcommand{\HRule}{\rule{\linewidth}{1.5mm}}
+#+LATEX: \newcommand{\hRule}{\rule{\linewidth}{1.0mm}}
+#+LATEX: \cleardoublepage
+#+LATEX: \setcounter{page}{1}
+
+#+LATEX: \lipsum
+#+LATEX: \balance
+* Directive
+  #+BEGIN_LATEX
+  \begin{figure*}[hb]
+  \begin{verbatim}
+  #+BEGIN_LATEX
+  \begin{figure*}[hb]
+  \makebox[\textwidth]{%
+    \begin{tikzpicture} [xnode/.style={draw, minimum width=2cm, minimum height=1.0cm}]
+    \node (opcode) [xnode] {操作码};  %at (current page.center)
+    \node at (opcode.south) [red,below] {1$\sim$3字节};
+    \node at (opcode.west) [xnode,left] (dprefix) {指令前缀};
+    \node at (dprefix.south) [red,below] {0$\sim$4字节};
+    \node at (opcode.east) [xnode,right] (M1) {ModR/M};
+    \node at (M1.south) [red,below] {0$\sim$1字节};
+    \node at (M1.east) [xnode,right] (M2) {SIB};
+    \node at (M2.south) [red,below] {0$\sim$1字节};
+    \node at (M2.east) [xnode,right] (M3) {移位};
+    \node at (M3.south) [red,below] {0$\sim$4字节};
+    \node at (M3.east) [xnode,right] (data) {数据元素};
+    \node at (data.south) [red,below] {0$\sim$4字节};
+    \node at (M2.north) [above,minimum width=1cm, minimum height=1.0cm] (MS) {修饰符};
+    \draw [blue] (M1.north) -- (MS) -- (M3.north);
+    \end{tikzpicture}
+  }
+  \caption{\textcolor{blue}{\textbf{Intel IA-32指令码格式}}}
+  \end{figure*}
+  #+END_LATEX
+  #+LATEX:  #+END_LATEX
+  #+BEGIN_LATEX
+  \end{verbatim}
+  \caption{\textcolor{blue}{\textbf{在Org-mode嵌套的\LaTeX{}
+  代码中插入在双栏环境中生成居中\protect \\
+  图片的TikZ代码的代码,效果见Figure 2.}}}
+  \end{figure*}
+  #+END_LATEX
+
+  #+BEGIN_LATEX
+  \begin{figure*}[hb]
+  \makebox[\textwidth]{%
+  \begin{tikzpicture}
+  [xnode/.style={draw, minimum width=2cm, minimum height=1.0cm}]
+  \node (opcode) [xnode] {操作码};  %at (current page.center)
+  \node at (opcode.south) [red,below] {1$\sim$3字节};
+  \node at (opcode.west) [xnode,left] (dprefix) {指令前缀};
+  \node at (dprefix.south) [red,below] {0$\sim$4字节};
+  \node at (opcode.east) [xnode,right] (M1) {ModR/M};
+  \node at (M1.south) [red,below] {0$\sim$1字节};
+  \node at (M1.east) [xnode,right] (M2) {SIB};
+  \node at (M2.south) [red,below] {0$\sim$1字节};
+  \node at (M2.east) [xnode,right] (M3) {移位};
+  \node at (M3.south) [red,below] {0$\sim$4字节};
+  \node at (M3.east) [xnode,right] (data) {数据元素};
+  \node at (data.south) [red,below] {0$\sim$4字节};
+  \node at (M2.north) [above,minimum width=1cm, minimum height=1.0cm] (MS) {修饰符};
+  \draw [blue] (M1.north) -- (MS) -- (M3.north);
+  \end{tikzpicture}
+  }
+  \caption{\textcolor{blue}{\textbf{Intel IA-32指令码格式}}}
+  \end{figure*}
+  #+END_LATEX
+
+* Makefile
+  This's a simple makefile.
+  #+BEGIN_SRC makefile -n
+    AS = as -gstabs -o $@.o $^
+    LD = ld -dynamic-linker -o $@ \
+         /lib64/ld-linux-x86-64.so.2 -lc $@.o
+    objs = cpuid bswap cmpxchg cmpxchg8
+
+    define COMPILE
+        $(AS)
+        $(LD)
+    endef   
+
+    all:$(objs)
+
+    %:%.s
+        $(COMPILE)
+
+    clean:
+        -rm -f *.o $(objs)
+  #+END_SRC

@@ -1,2 +1,4 @@
 *.log
+*.aux
 rb-tree/topng/*.tex
+something/*.tex
